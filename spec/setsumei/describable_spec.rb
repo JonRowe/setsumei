@@ -47,6 +47,8 @@ module Setsumei
         it_should_behave_like "it creates an attribute of type", :string,  creating_a: Describable::StringAttribute
         it_should_behave_like "it creates an attribute of type", :float,   creating_a: Describable::FloatAttribute
         it_should_behave_like "it creates an attribute of type", :int,     creating_a: Describable::IntAttribute
+
+        it_should_behave_like "it creates an attribute of type", Class.new, creating_a: Describable::ObjectAttribute
       end
     end
 
