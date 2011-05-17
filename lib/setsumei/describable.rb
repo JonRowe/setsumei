@@ -29,6 +29,7 @@ module Setsumei
           case type
             when :boolean then BooleanAttribute
             when :string  then StringAttribute
+            when nil      then StringAttribute
             when :float   then FloatAttribute
             when :int     then IntAttribute
           end
