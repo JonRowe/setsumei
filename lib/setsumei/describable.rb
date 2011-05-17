@@ -14,7 +14,7 @@ module Setsumei
       end
 
       def define field_name, options = {}
-        _defined_attributes[field_name] = StringAttribute.named field_name
+        _defined_attributes[field_name] = attribute_type(options[:as_a]).named field_name
         attr_accessor field_name
       end
 

@@ -41,10 +41,12 @@ module Setsumei
       end
 
       context "where setting a specific type" do
-        it "should allow defining of attribute with an explicity type" do
-          klass.define :field, as_a: :string
-          klass.defined_attributes[:field].should be_a Describable::StringAttribute
-        end
+        subject { klass }
+
+        it_should_behave_like "it creates an attribute of type", :boolean, creating_a: Describable::BooleanAttribute
+        it_should_behave_like "it creates an attribute of type", :string,  creating_a: Describable::StringAttribute
+        it_should_behave_like "it creates an attribute of type", :float,   creating_a: Describable::FloatAttribute
+        it_should_behave_like "it creates an attribute of type", :int,     creating_a: Describable::IntAttribute
       end
     end
 
