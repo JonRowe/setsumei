@@ -1,4 +1,7 @@
+require 'setsumei/describable/boolean_attribute'
 require 'setsumei/describable/string_attribute'
+require 'setsumei/describable/float_attribute'
+require 'setsumei/describable/int_attribute'
 
 module Setsumei
   module Describable
@@ -21,6 +24,14 @@ module Setsumei
       private
         def _defined_attributes
           (@_defined_attributes ||= {})
+        end
+        def attribute_type(type)
+          case type
+            when :boolean then BooleanAttribute
+            when :string  then StringAttribute
+            when :float   then FloatAttribute
+            when :int     then IntAttribute
+          end
         end
     end
   end
