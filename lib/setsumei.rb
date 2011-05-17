@@ -1,3 +1,1 @@
-module Setsumei
-  # Your code goes here...
-end
+require 'setsumei/describable'
