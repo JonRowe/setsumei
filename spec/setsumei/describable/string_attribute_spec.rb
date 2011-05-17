@@ -14,8 +14,10 @@ module Setsumei
         its(:name) { should == name }
       end
 
-      describe ".value_for(pre_type_cast_value)" do
-        subject { StringAttribute.value_for pre_type_cast_value }
+      describe "#value_for(pre_type_cast_value)" do
+        let(:string_attribute) { StringAttribute.new }
+
+        subject { string_attribute.value_for pre_type_cast_value }
 
         context "where the value is a string" do
           let(:pre_type_cast_value) { "I'm already a string" }

@@ -7,14 +7,14 @@ module Setsumei
         end
       end
 
-      def StringAttribute.value_for(pre_type_cast_value)
-        pre_type_cast_value.to_s
-      end
-
       attr_accessor :name
 
       def is_an_attribute_of_type?(type)
         type == :string || type == self.class
+      end
+
+      def value_for(pre_type_cast_value)
+        pre_type_cast_value.to_s
       end
     end
   end
