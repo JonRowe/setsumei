@@ -1,6 +1,5 @@
-RSpec::Matchers.define :have_an_attribute do |name,opts = {}|
-  match do |klass|
-    setup(klass,name,opts)
-    check_attribute && check_type && check_options
+RSpec::Matchers.define :be_an_attribute_of_type do |type|
+  match do |subject|
+    subject.is_an_attribute_of_type? type
   end
 end
