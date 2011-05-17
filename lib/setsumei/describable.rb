@@ -13,8 +13,9 @@ module Setsumei
         _defined_attributes.dup
       end
 
-      def define(field)
-        _defined_attributes[field] = StringAttribute.new
+      def define field_name, options = {}
+        _defined_attributes[field_name] = StringAttribute.named field_name
+        attr_accessor field_name
       end
 
       private

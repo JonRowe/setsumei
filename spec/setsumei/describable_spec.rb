@@ -39,6 +39,28 @@ module Setsumei
         klass.define :field
         klass.defined_attributes[:field].name.should == :field
       end
+
+      context "where setting a specific type" do
+        it "should allow defining of attribute with an explicity type" do
+          klass.define :field, as_a: :string
+          klass.defined_attributes[:field].should be_a Describable::StringAttribute
+        end
+      end
+    end
+
+    describe "instances with defined attributes" do
+      before do
+        klass.class_eval do
+          define :my_string_attribute
+        end
+      end
+
+      it "should allow me set to and retrieve values for my attribute" do
+        klass.new.tap do |object|
+          object.my_string_attribute = "Hey Everybody!"
+          object.my_string_attribute.should == "Hey Everybody!"
+        end
+      end
     end
   end
 end
