@@ -2,7 +2,7 @@ module Setsumei
   module Describable
     class FloatAttribute
 
-      def FloatAttribute.named(name)
+      def FloatAttribute.named(name, options = {})
         new.tap do |attribute|
           attribute.name = name
         end

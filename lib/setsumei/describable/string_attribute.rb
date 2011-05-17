@@ -1,7 +1,7 @@
 module Setsumei
   module Describable
     class StringAttribute
-      def StringAttribute.named(name)
+      def StringAttribute.named(name,options = {})
         new.tap do |attribute|
           attribute.name = name
         end

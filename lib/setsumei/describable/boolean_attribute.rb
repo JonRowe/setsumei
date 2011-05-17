@@ -2,7 +2,7 @@ module Setsumei
   module Describable
     class BooleanAttribute
 
-      def BooleanAttribute.named(name)
+      def BooleanAttribute.named(name, options = {})
         new.tap do |attribute|
           attribute.name = name
         end

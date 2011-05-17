@@ -1,7 +1,7 @@
 module Setsumei
   module Describable
     class IntAttribute
-      def IntAttribute.named(name)
+      def IntAttribute.named(name, options = {})
         new.tap do |attribute|
           attribute.name = name
         end
