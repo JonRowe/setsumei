@@ -1,10 +1,11 @@
+require 'setsumei/describable/string_attribute'
+
 module Setsumei
   module Describable
+
     def Describable.included(other)
       other.extend DescriptionMethods
     end
-
-    class StringAttribute; end
 
     module DescriptionMethods
 

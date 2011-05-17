@@ -35,6 +35,10 @@ module Setsumei
         klass.define :field
         klass.defined_attributes[:field].should be_a Describable::StringAttribute
       end
+      it "should have set the name on the attribute to be the field name" do
+        klass.define :field
+        klass.defined_attributes[:field].name.should == :field
+      end
     end
   end
 end
