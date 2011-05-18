@@ -20,4 +20,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'json'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'autotest-standalone'
+  s.add_development_dependency 'ruby-debug19'
 end
