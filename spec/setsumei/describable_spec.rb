@@ -66,5 +66,57 @@ module Setsumei
         end
       end
     end
+
+    describe ".collection_of(klass,options)" do
+      let(:another_klass) { Class.new }
+      let(:options) { mock "options" }
+      let(:element) { mock "element" }
+      let(:element_2) { mock "element_2" }
+      let(:instance) { klass.new }
+
+      before do
+        klass.collection_of another_klass, options
+      end
+
+      context "a klass with collection_of invoked" do
+        context "should behave like an array" do
+          before do
+            instance << element
+          end
+
+          it "should accept elements with shovel" do
+            true
+          end
+          it "should be testable with include" do
+            instance.should include element
+          end
+          it "should be accessible with []" do
+            instance[0].should == element
+          end
+          it "should settable with []=" do
+            instance[0] = element_2
+            instance[0].should == element_2
+          end
+          it "should be accessible with first" do
+            instance.first.should == element
+          end
+          it "should be iterable over" do
+            values = []
+            instance.each { |value| values << value }
+            values.should == [element]
+          end
+          it "should be injectable" do
+            instance.inject({}) { |b,c| b[b.size.to_s] = c; b }.should == { "0" => element }
+          end
+          it "should be mappable" do
+            instance << element_2
+            instance.map { |a| [a] }.should == [[element],[element_2]]
+          end
+          it "should be comparable to an array" do
+            instance.should == [element]
+          end
+        end
+      end
+    end
   end
 end
