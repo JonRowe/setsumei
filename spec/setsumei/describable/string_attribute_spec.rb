@@ -24,6 +24,7 @@ module Setsumei
 
           it { should == pre_type_cast_value }
         end
+
         context "where the value isn't a string" do
           let(:to_s_value) { "stringified value of thing thats a string" }
           let(:pre_type_cast_value) { mock "something thats not a string", to_s: to_s_value }
@@ -50,6 +51,34 @@ module Setsumei
         context "where type is unknown" do
           let(:type) { mock "an unknown type" }
           it { should be_false }
+        end
+      end
+
+      describe "set_value_on object, from_value_in: hash" do
+        let(:hash) { Hash.new }
+        let(:key) { "key" }
+        let(:hash_keys) { mock "hash_keys" }
+        let(:value_in_hash) { mock "value_in_hash" }
+
+        let(:object) { mock "object", :my_string_attribute= => nil }
+
+        let(:string_attribute) { StringAttribute.named :my_string_attribute }
+
+        before do
+          Build::Key.stub(:for).and_return(key)
+          hash[key] = value_in_hash
+        end
+
+        subject { string_attribute.set_value_on object, from_value_in: hash }
+
+        it "should detect the key it should use to retrieve the value from the hash" do
+          hash.should_receive(:keys).and_return(hash_keys)
+          Build::Key.should_receive(:for).with(:my_string_attribute, given: hash_keys ).and_return(key)
+          subject
+        end
+        it "should pass object a value to the attribute described by this class" do
+          object.should_receive(:my_string_attribute=).with(value_in_hash)
+          subject
         end
       end
     end

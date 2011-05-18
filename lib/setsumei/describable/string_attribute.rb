@@ -16,6 +16,22 @@ module Setsumei
       def value_for(pre_type_cast_value)
         pre_type_cast_value.to_s
       end
+
+      def set_value_on(object, options)
+        object.send accessor, value_from_hash(options[:from_value_in])
+      end
+
+      def value_from_hash(hash)
+        hash[name]
+      end
+
+      private
+        def accessor
+          :"#{name}="
+        end
+        def value_from_hash(hash)
+          hash[ Build::Key.for name, given: hash.keys ]
+        end
     end
   end
 end
