@@ -22,18 +22,18 @@ module Setsumei
         end
       end
 
-      # describe "#value_for(pre_type_cast_value)" do
-      #   let(:object_attribute) { ObjectAttribute.new }
+      describe "#value_for(pre_type_cast_value)" do
+        let(:klass) { mock "klass" }
+        let(:pre_type_cast_value) { mock "pre_type_cast_value" }
+        let(:object_attribute) { ObjectAttribute.named :name, as_a: klass }
 
-      #   subject { object_attribute.value_for pre_type_cast_value }
+        subject { object_attribute.value_for pre_type_cast_value }
 
-      #   context "where the value is a object" do
-      #     specify { object_attribute.value_for(10.2).should == 10.2 }
-      #   end
-      #   context "where the value isn't a object" do
-      #     specify { object_attribute.value_for("10.2").should == 10.2 }
-      #   end
-      # end
+        it "should use the Builder to produce a object with klass" do
+          Build.should_receive(:from_parsed_data).with(klass,pre_type_cast_value)
+          subject
+        end
+      end
 
       describe "#is_an_attribute_of_type?" do
         let(:object_attribute) { ObjectAttribute.new }

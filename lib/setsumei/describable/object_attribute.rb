@@ -16,6 +16,10 @@ module Setsumei
         self.klass = Object
       end
 
+      def value_for(data)
+        Build.from_parsed_data self.klass, data
+      end
+
       def is_an_attribute_of_type?(type)
         type == :object || type == self.class || type == self.klass
       end
