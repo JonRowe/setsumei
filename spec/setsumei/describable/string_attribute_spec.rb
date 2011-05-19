@@ -59,6 +59,7 @@ module Setsumei
         let(:key) { "key" }
         let(:hash_keys) { mock "hash_keys" }
         let(:value_in_hash) { mock "value_in_hash" }
+        let(:converted_value) { mock "converted_value" }
 
         let(:object) { mock "object", :my_string_attribute= => nil }
 
@@ -67,6 +68,7 @@ module Setsumei
         before do
           Build::Key.stub(:for).and_return(key)
           hash[key] = value_in_hash
+          string_attribute.stub(:value_for).and_return(converted_value)
         end
 
         subject { string_attribute.set_value_on object, from_value_in: hash }
@@ -76,8 +78,12 @@ module Setsumei
           Build::Key.should_receive(:for).with(:my_string_attribute, given: hash_keys ).and_return(key)
           subject
         end
+        it "should convert the value" do
+          string_attribute.should_receive(:value_for).with(value_in_hash).and_return(converted_value)
+          subject
+        end
         it "should pass object a value to the attribute described by this class" do
-          object.should_receive(:my_string_attribute=).with(value_in_hash)
+          object.should_receive(:my_string_attribute=).with(converted_value)
           subject
         end
       end

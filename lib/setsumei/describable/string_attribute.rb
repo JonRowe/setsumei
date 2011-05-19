@@ -21,16 +21,12 @@ module Setsumei
         object.send accessor, value_from_hash(options[:from_value_in])
       end
 
-      def value_from_hash(hash)
-        hash[name]
-      end
-
       private
         def accessor
           :"#{name}="
         end
         def value_from_hash(hash)
-          hash[ Build::Key.for name, given: hash.keys ]
+          value_for hash[ Build::Key.for name, given: hash.keys ]
         end
     end
   end
