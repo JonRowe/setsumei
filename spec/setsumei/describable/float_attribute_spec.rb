@@ -47,6 +47,40 @@ module Setsumei
           it { should be_false }
         end
       end
+
+      describe "set_value_on object, from_value_in: hash" do
+        let(:hash) { Hash.new }
+        let(:key) { "key" }
+        let(:hash_keys) { mock "hash_keys" }
+        let(:value_in_hash) { mock "value_in_hash" }
+
+        let(:object) { mock "object", :my_float_attribute= => nil }
+
+        let(:float_attribute) { FloatAttribute.named :my_float_attribute }
+        let(:converted_value) { mock "converted_value" }
+
+        before do
+          Build::Key.stub(:for).and_return(key)
+          hash[key] = value_in_hash
+          float_attribute.stub(:value_for).and_return(converted_value)
+        end
+
+        subject { float_attribute.set_value_on object, from_value_in: hash }
+
+        it "should detect the key it should use to retrieve the value from the hash" do
+          hash.should_receive(:keys).and_return(hash_keys)
+          Build::Key.should_receive(:for).with(:my_float_attribute, given: hash_keys ).and_return(key)
+          subject
+        end
+        it "should convert the value" do
+          float_attribute.should_receive(:value_for).with(value_in_hash).and_return(converted_value)
+          subject
+        end
+        it "should pass object a value to the attribute described by this class" do
+          object.should_receive(:my_float_attribute=).with(converted_value)
+          subject
+        end
+      end
     end
   end
 end
