@@ -3,6 +3,7 @@ require 'setsumei/describable/string_attribute'
 require 'setsumei/describable/float_attribute'
 require 'setsumei/describable/int_attribute'
 require 'setsumei/describable/object_attribute'
+require 'setsumei/describable/collection'
 
 module Setsumei
   module Describable
@@ -56,6 +57,7 @@ module Setsumei
               @_internal_collection ||= []
             end
         end
+        _defined_attributes[:_self] = Collection.of klass,options
       end
 
       private

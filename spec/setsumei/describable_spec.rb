@@ -73,14 +73,18 @@ module Setsumei
       let(:element) { mock "element" }
       let(:element_2) { mock "element_2" }
       let(:instance) { klass.new }
+      let(:collection) { mock "collection" }
 
       before do
-        klass.collection_of another_klass, options
+        Describable::Collection.stub(:of).and_return(collection)
       end
+
+      subject { klass.collection_of another_klass, options }
 
       context "a klass with collection_of invoked" do
         context "should behave like an array" do
           before do
+            subject
             instance << element
           end
 
@@ -116,6 +120,12 @@ module Setsumei
             instance.should == [element]
           end
         end
+      end
+
+      it "should setup a describable collection" do
+        Describable::Collection.should_receive(:of).with(another_klass,options).and_return(collection)
+        subject
+        klass.defined_attributes.values.should include collection
       end
     end
   end
