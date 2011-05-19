@@ -24,14 +24,25 @@ module Setsumei
 
       describe "#value_for(pre_type_cast_value)" do
         let(:klass) { mock "klass" }
-        let(:pre_type_cast_value) { mock "pre_type_cast_value" }
+        let(:pre_type_cast_value) { { hash: "with_values" } }
         let(:object_attribute) { ObjectAttribute.named :name, as_a: klass }
 
         subject { object_attribute.value_for pre_type_cast_value }
 
         it "should use the Builder to produce a object with klass" do
-          Build.should_receive(:from_parsed_data).with(klass,pre_type_cast_value)
+          Build.should_receive(:a).with(klass, from: pre_type_cast_value)
           subject
+        end
+
+        context "there is no data for this object" do
+          context "empty hash" do
+            let(:pre_type_cast_value) { {} }
+            it { should be_nil }
+          end
+          context "nil" do
+            let(:pre_type_cast_value) { nil }
+            it { should be_nil }
+          end
         end
       end
 
@@ -53,6 +64,40 @@ module Setsumei
         context "where type is unknown" do
           let(:type) { mock "an unknown type" }
           it { should be_false }
+        end
+      end
+
+      describe "set_value_on object, from_value_in: hash" do
+        let(:hash) { Hash.new }
+        let(:key) { "key" }
+        let(:hash_keys) { mock "hash_keys" }
+        let(:value_in_hash) { mock "value_in_hash" }
+
+        let(:object) { mock "object", :my_object_attribute= => nil }
+
+        let(:object_attribute) { ObjectAttribute.named :my_object_attribute, as_a: mock("object_klass") }
+        let(:converted_value) { mock "converted_value" }
+
+        before do
+          Build::Key.stub(:for).and_return(key)
+          hash[key] = value_in_hash
+          object_attribute.stub(:value_for).and_return(converted_value)
+        end
+
+        subject { object_attribute.set_value_on object, from_value_in: hash }
+
+        it "should detect the key it should use to retrieve the value from the hash" do
+          hash.should_receive(:keys).and_return(hash_keys)
+          Build::Key.should_receive(:for).with(:my_object_attribute, given: hash_keys ).and_return(key)
+          subject
+        end
+        it "should convert the value" do
+          object_attribute.should_receive(:value_for).with(value_in_hash).and_return(converted_value)
+          subject
+        end
+        it "should pass object a value to the attribute described by this class" do
+          object.should_receive(:my_object_attribute=).with(converted_value)
+          subject
         end
       end
     end
