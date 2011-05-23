@@ -12,6 +12,8 @@ module Setsumei
 
         it { should be_a BooleanAttribute }
         its(:name) { should == name }
+
+        it_should_behave_like "it handles options properly"
       end
 
       describe "#value_for(pre_type_cast_value)" do

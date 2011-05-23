@@ -3,14 +3,16 @@ module Setsumei
     class ObjectAttribute
 
       def ObjectAttribute.named(name,options = {})
+        options = options.dup
         raise ArgumentError.new("you must specify what the object is") unless options.has_key? :as_a
         new.tap do |attribute|
           attribute.name = name
-          attribute.klass = options[:as_a]
+          attribute.klass = options.delete(:as_a)
+          attribute.options = options
         end
       end
 
-      attr_accessor :name, :klass
+      attr_accessor :name, :klass, :options
 
       def initialize
         self.klass = Object

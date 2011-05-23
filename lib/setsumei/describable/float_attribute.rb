@@ -5,10 +5,11 @@ module Setsumei
       def FloatAttribute.named(name, options = {})
         new.tap do |attribute|
           attribute.name = name
+          attribute.options = options.dup.tap { |o| o.delete :as_a }
         end
       end
 
-      attr_accessor :name
+      attr_accessor :name, :options
 
       def is_an_attribute_of_type?(type)
         type == :float || type == self.class

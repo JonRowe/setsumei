@@ -2,12 +2,15 @@ module Setsumei
   module Describable
     class IntAttribute
       def IntAttribute.named(name, options = {})
+        options = options.dup
         new.tap do |attribute|
           attribute.name = name
+          options.delete(:as_a)
+          attribute.options = options
         end
       end
 
-      attr_accessor :name
+      attr_accessor :name, :options
 
       def is_an_attribute_of_type?(type)
         type == :int || type == self.class

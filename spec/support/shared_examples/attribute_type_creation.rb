@@ -9,5 +9,11 @@ shared_examples "it creates an attribute of type" do |_type,options|
       subject.define :field, as_a: _type
       subject.defined_attributes[:field].should be_an_attribute_of_type(_type)
     end
+    context "where options are specified" do
+      it "should set the options upon the attribute" do
+        subject.define :field, as_a: _type, with: :options
+        subject.defined_attributes[:field].options.should == { with: :options }
+      end
+    end
   end
 end

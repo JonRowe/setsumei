@@ -3,12 +3,15 @@ module Setsumei
     class BooleanAttribute
 
       def BooleanAttribute.named(name, options = {})
+        options = options.dup
         new.tap do |attribute|
           attribute.name = name
+          options.delete(:as_a)
+          attribute.options = options
         end
       end
 
-      attr_accessor :name
+      attr_accessor :name, :options
 
       def is_an_attribute_of_type?(type)
         type == :boolean || type == self.class
