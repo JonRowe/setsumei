@@ -29,6 +29,10 @@ module Setsumei
         let(:pre_type_cast_value) { { hash: "with_values" } }
         let(:object_attribute) { ObjectAttribute.named :name, as_a: klass }
 
+        before do
+          klass.stub(:create_from).and_raise(NoMethodError)
+        end
+
         subject { object_attribute.value_for pre_type_cast_value }
 
         it "should use the Builder to produce a object with klass" do
@@ -44,6 +48,18 @@ module Setsumei
           context "nil" do
             let(:pre_type_cast_value) { nil }
             it { should be_nil }
+          end
+        end
+        context "klass responds to create_from" do
+          let(:pre_fab_object) { mock "pre_fab_object" }
+
+          before do
+            klass.unstub(:create_from)
+          end
+
+          it "should build the klass itself" do
+            klass.should_receive(:create_from).with(pre_type_cast_value).and_return(pre_fab_object)
+            subject.should == pre_fab_object
           end
         end
       end

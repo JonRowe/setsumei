@@ -20,7 +20,12 @@ module Setsumei
 
       def value_for(data)
         return nil if data.nil? || data.empty?
-        Build.a self.klass, from: data
+
+        begin
+          self.klass.create_from data
+        rescue NoMethodError
+          Build.a self.klass, from: data
+        end
       end
 
       def is_an_attribute_of_type?(type)

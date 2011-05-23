@@ -4,7 +4,7 @@ module Setsumei
   module Build
     def Build.a(klass,options = {})
       inform_developer "#{klass} should be able to list its attributes" unless klass.respond_to? :defined_attributes
-      inform_developer "wrong number of arguments, options must include from: data }" unless options.keys.include? :from
+      inform_developer "wrong number of arguments, options must include { from: data }" unless options.keys.include? :from
 
       klass.new.tap do |object|
         klass.defined_attributes.each do |_,attribute|
