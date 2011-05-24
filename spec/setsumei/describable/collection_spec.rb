@@ -44,8 +44,12 @@ module Setsumei
           subject
         end
 
+        context "nil value" do
+          specify { collection.set_value_on(object).should be_nil }
+        end
+
         context "single value" do
-          let(:single_value) { mock "single_value" }
+          let(:single_value) { mock "single_value", to_a: nil }
           let(:single_instance) { mock "single_instance" }
 
           before do

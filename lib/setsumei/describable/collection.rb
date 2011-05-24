@@ -11,10 +11,23 @@ module Setsumei
       attr_accessor :klass, :options
 
       def set_value_on(object, options = {})
-        [options[:from_value_in][Build::Key.for((self.options[:within] || klass), given: options[:from_value_in].keys)]].flatten(1).each do |data|
+        return nil if options.empty?
+
+        Array( extract_from_hash options[:from_value_in] ).each do |data|
           object << Build.a(klass, from: data)
         end
       end
+
+      private
+        def extract_from_hash(hash)
+          hash[ extract_key_for hash ]
+        end
+        def extract_key_for(hash)
+          Build::Key.for configured_key, given: hash.keys
+        end
+        def configured_key
+          options[:within] || klass
+        end
     end
   end
 end
