@@ -46,6 +46,11 @@ module Setsumei
 
         context "nil value" do
           specify { collection.set_value_on(object).should be_nil }
+          it "should protect against instances where there are attributes, but not for our defined element keys" do
+            hash = { from_value_in: {"@size"=>"0"} }
+            object.should_not_receive(:<<)
+            collection.set_value_on(object,hash)
+          end
         end
 
         context "single value" do
