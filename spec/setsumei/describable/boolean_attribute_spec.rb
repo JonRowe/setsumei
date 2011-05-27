@@ -84,6 +84,7 @@ module Setsumei
           object.should_receive(:my_boolean_attribute=).with(converted_value)
           subject
         end
+        it_should_behave_like "it handles lookup keys properly"
       end
     end
   end

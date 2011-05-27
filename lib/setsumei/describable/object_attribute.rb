@@ -8,11 +8,12 @@ module Setsumei
         new.tap do |attribute|
           attribute.name = name
           attribute.klass = options.delete(:as_a)
+          attribute.lookup_key = options.delete(:from_within)
           attribute.options = options
         end
       end
 
-      attr_accessor :name, :klass, :options
+      attr_accessor :name, :klass, :options, :lookup_key
 
       def initialize
         self.klass = Object
@@ -41,7 +42,10 @@ module Setsumei
           :"#{name}="
         end
         def value_from_hash(hash)
-          value_for hash[ Build::Key.for name, given: hash.keys ]
+          value_for hash[ key_for(hash)]
+        end
+        def key_for(hash)
+          lookup_key || Build::Key.for(name, given: hash.keys)
         end
     end
   end

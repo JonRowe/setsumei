@@ -2,13 +2,15 @@ module Setsumei
   module Describable
     class StringAttribute
       def StringAttribute.named(name,options = {})
+        options = options.dup
         new.tap do |attribute|
           attribute.name = name
-          attribute.options = options.dup.tap { |o| o.delete :as_a }
+          attribute.lookup_key = options.delete(:from_within)
+          attribute.options = options.tap { |o| o.delete :as_a }
         end
       end
 
-      attr_accessor :name, :options
+      attr_accessor :name, :options, :lookup_key
 
       def is_an_attribute_of_type?(type)
         type == :string || type == self.class
@@ -27,7 +29,10 @@ module Setsumei
           :"#{name}="
         end
         def value_from_hash(hash)
-          value_for hash[ Build::Key.for name, given: hash.keys ]
+          value_for hash[ key_for(hash)]
+        end
+        def key_for(hash)
+          lookup_key || Build::Key.for(name, given: hash.keys)
         end
     end
   end
