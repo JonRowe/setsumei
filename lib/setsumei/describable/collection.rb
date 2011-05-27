@@ -11,7 +11,7 @@ module Setsumei
       attr_accessor :klass, :options
 
       def set_value_on(object, options = {})
-        return nil if options.empty? || options[:from_value_in].empty?
+        return nil if options.empty? || options[:from_value_in].nil?
 
         array( extract_from_hash options[:from_value_in] ).each do |data|
           object << Build.a(klass, from: data)
@@ -23,7 +23,7 @@ module Setsumei
           [thing].flatten(1).compact
         end
         def extract_from_hash(hash)
-          hash[ extract_key_for hash ]
+          (options[:direct_collection] && hash) || hash[ extract_key_for hash ]
         end
         def extract_key_for(hash)
           Build::Key.for configured_key, given: hash_keys(hash)

@@ -19,6 +19,63 @@ module Setsumei
         its(:options) { should == options }
       end
 
+      describe "#set_value_on(object, from_value_in: data) where data is a direct single or collection of values" do
+        let(:object) { mock "object", :<< => nil }
+
+        let(:klass) { mock "a klass" }
+        let(:collection) { Collection.of klass, from_value_in: data, direct_collection: true }
+
+        subject { collection.set_value_on object, from_value_in: data }
+
+        context "nil value" do
+          let(:data) { nil }
+          it "should protect against instances where there are attributes, but not for our defined element keys" do
+            object.should_not_receive(:<<)
+            subject
+          end
+        end
+        context "single value" do
+          let(:data) { mock "data" }
+          let(:single_instance) { mock "single_instance" }
+
+          before { Build.stub(:a).and_return single_instance }
+
+          it "should build a single instance of klass" do
+            Build.should_receive(:a).with(klass, from: data).and_return(single_instance)
+            subject
+          end
+          it "should append this to the object" do
+            object.should_receive(:<<).with(single_instance)
+            subject
+          end
+        end
+        context "multiple values" do
+          let(:a_value) { mock "a_value" }
+          let(:another_value) { mock "another_value" }
+          let(:more_values) { mock "more_values" }
+
+          let(:first_instance) { mock "first_instance" }
+          let(:second_instance) { mock "second_instance" }
+          let(:final_instance) { mock "final_instance" }
+
+          let(:data) { [a_value,another_value,more_values] }
+
+          before { Build.stub(:a).and_return( first_instance, second_instance, final_instance ) }
+
+          it "should build multiple instances of klass" do
+            Build.should_receive(:a).with(klass, from: a_value)#and_return(first_instance)
+            Build.should_receive(:a).with(klass, from: another_value)#and_return(second_instance)
+            Build.should_receive(:a).with(klass, from: more_values)#and_return(final_instance)
+            subject
+          end
+          it "should append all of these to the object" do
+            object.should_receive(:<<).with(first_instance)
+            object.should_receive(:<<).with(second_instance)
+            object.should_receive(:<<).with(final_instance)
+            subject
+          end
+        end
+      end
       describe "#set_value_on(object, from_value_in: hash)" do
         let(:object) { mock "object" }
         let(:hash) { Hash.new }
