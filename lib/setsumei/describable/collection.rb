@@ -29,7 +29,7 @@ module Setsumei
           Build::Key.for configured_key, given: hash_keys(hash)
         end
         def configured_key
-          options[:within] || klass
+          options[:within] || klass.to_s.split("::")[-1]
         end
         def hash_keys(hash)
           ( hash && hash.keys ) || []

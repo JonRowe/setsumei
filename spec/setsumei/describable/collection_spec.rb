@@ -82,11 +82,15 @@ module Setsumei
         let(:hash_keys) { mock "hash_keys" }
         let(:key) { "aHashKey" }
 
-        let(:klass) { mock "a klass" }
+        let(:klass) { AModule::Klass }
         let(:options) { Hash.new }
         let(:collection) { Collection.of klass, options }
 
         before do
+          module AModule
+            class Klass
+            end
+          end
           hash.stub(:keys).and_return(hash_keys)
           Build::Key.stub(:for).and_return(key)
           hash[key] = []
@@ -97,7 +101,7 @@ module Setsumei
 
         it "should detect they key it should use to retreive the values from the hash" do
           hash.should_receive(:keys).and_return(hash_keys)
-          Build::Key.should_receive(:for).with( klass, given: hash_keys).and_return(key)
+          Build::Key.should_receive(:for).with( "Klass", given: hash_keys).and_return(key)
           subject
         end
 
