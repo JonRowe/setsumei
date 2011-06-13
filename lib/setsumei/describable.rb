@@ -3,6 +3,8 @@ require 'setsumei/describable/string_attribute'
 require 'setsumei/describable/float_attribute'
 require 'setsumei/describable/int_attribute'
 require 'setsumei/describable/object_attribute'
+require 'setsumei/describable/time_attribute'
+require 'setsumei/describable/date_attribute'
 require 'setsumei/describable/collection'
 
 module Setsumei
@@ -66,14 +68,19 @@ module Setsumei
         end
         def attribute_type(type)
           case type
-            when :boolean then BooleanAttribute
-            when :string  then StringAttribute
-            when nil      then StringAttribute
-            when :float   then FloatAttribute
-            when :int     then IntAttribute
+            when :boolean   then BooleanAttribute
+            when :string    then StringAttribute
+            when nil        then StringAttribute
+            when :float     then FloatAttribute
+            when :int       then IntAttribute
+            when :date      then DateAttribute
+            when :time      then TimeAttribute
           else
-            ObjectAttribute if type.is_a?(Class)
+            object_attribute_if_a_class(type) or raise(ArgumentError)
           end
+        end
+        def object_attribute_if_a_class(type)
+          (type.is_a?(Class) && ObjectAttribute)
         end
     end
   end
