@@ -28,7 +28,30 @@ module Setsumei
       end
       it { should == object }
     end
+    describe ".a(String,from: hash_data)" do
+      let(:hash_data) { mock "hash_data", to_s: string }
+      let(:string) { mock "string" }
 
+      subject { Build.a String, from: hash_data }
+
+      it "should call to_s on hash_data" do
+        hash_data.should_receive(:to_s).and_return(string)
+        subject
+      end
+      it { should == string }
+    end
+    describe ".a(Float,from: hash_data)" do
+      let(:hash_data) { mock "hash_data", to_f: float }
+      let(:float) { mock "float" }
+
+      subject { Build.a Float, from: hash_data }
+
+      it "should call to_f on hash_data" do
+        hash_data.should_receive(:to_f).and_return(float)
+        subject
+      end
+      it { should == float }
+    end
     describe ".a(klass,from: hash_data) error conditions" do
       context "klass doesn't have defined attributes" do
         let(:klass) { mock "class" }
