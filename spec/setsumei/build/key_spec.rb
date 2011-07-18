@@ -9,6 +9,11 @@ module Setsumei
         subject { Key.for :attribute_name, given: hash_keys }
 
         specify do
+          hash_keys.concat ["AttributeName", "attributeName", "@attributeName","attribute_name"]
+          subject.should == "attribute_name"
+        end
+
+        specify do
           hash_keys.concat ["AttributeName", "attributeName", "@attributeName"]
           subject.should == "attributeName"
         end
@@ -21,6 +26,27 @@ module Setsumei
         specify do
           hash_keys.concat ["AttributeName"]
           subject.should == "AttributeName"
+        end
+      end
+
+      describe "direct(name,keys)" do
+        let(:name) { 'attribute_name' }
+        let(:keys) { [] }
+
+        subject { Key.direct :attribute_name, keys }
+
+        it "should return name when keys contain name" do
+          keys << name
+          subject.should == name
+        end
+        it "should return nil when keys do not contain name" do
+          subject.should be_nil
+        end
+
+        context "keys are ommited" do
+          it "should return name" do
+            Key.direct(:attribute_name).should == "attribute_name"
+          end
         end
       end
 

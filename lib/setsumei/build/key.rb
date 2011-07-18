@@ -3,7 +3,10 @@ module Setsumei
     class Key
       def Key.for(name,options = { given: [name] } )
         possible_keys = options[:given]
-        lower_camel_case(name,possible_keys) || at_symbol_case(name,possible_keys) || upper_camel_case(name,possible_keys)
+        direct(name,possible_keys) || lower_camel_case(name,possible_keys) || at_symbol_case(name,possible_keys) || upper_camel_case(name,possible_keys)
+      end
+      def Key.direct name, keys = nil
+        return_if name.to_s, in: keys
       end
       def Key.lower_camel_case name, keys = nil
         lower_camel_case = name.to_s.gsub(/_[a-zA-Z]/) { |a| a[1].upcase }
