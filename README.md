@@ -1,3 +1,4 @@
+[![Build Status](https://secure.travis-ci.org/JonRowe/setsumei.png)](http://travis-ci.org/JonRowe/setsumei)
 Setsumei
 --------
 
