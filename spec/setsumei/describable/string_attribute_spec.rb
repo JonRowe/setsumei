@@ -5,17 +5,6 @@ module Setsumei
     describe StringAttribute do
       its(:name) { should == nil }
 
-      describe ".named(name)" do
-        let(:name) { :my_string_field }
-
-        subject { StringAttribute.named(name) }
-
-        it { should be_a StringAttribute }
-        its(:name) { should == name }
-
-        it_should_behave_like "it handles options properly"
-      end
-
       describe "#value_for(pre_type_cast_value)" do
         let(:string_attribute) { StringAttribute.new }
 
@@ -65,7 +54,7 @@ module Setsumei
 
         let(:object) { mock "object", :my_string_attribute= => nil }
 
-        let(:string_attribute) { StringAttribute.named :my_string_attribute }
+        let(:string_attribute) { Attribute.named :my_string_attribute, StringAttribute.new }
 
         before do
           Build::Key.stub(:for).and_return(key)

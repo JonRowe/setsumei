@@ -5,17 +5,6 @@ module Setsumei
     describe BooleanAttribute do
       its(:name) { should == nil }
 
-      describe ".named(name)" do
-        let(:name) { :my_boolean_field }
-
-        subject { BooleanAttribute.named(name) }
-
-        it { should be_a BooleanAttribute }
-        its(:name) { should == name }
-
-        it_should_behave_like "it handles options properly"
-      end
-
       describe "#value_for(pre_type_cast_value)" do
         let(:boolean_attribute) { BooleanAttribute.new }
 
@@ -60,7 +49,7 @@ module Setsumei
 
         let(:object) { mock "object", :my_boolean_attribute= => nil }
 
-        let(:boolean_attribute) { BooleanAttribute.named :my_boolean_attribute }
+        let(:boolean_attribute) { Attribute.named :my_boolean_attribute, BooleanAttribute.new }
         let(:converted_value) { mock "converted_value" }
 
         before do

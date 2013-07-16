@@ -5,26 +5,6 @@ module Setsumei
     describe TimeAttribute do
       its(:name) { should == nil }
 
-      describe ".named(name)" do
-        let(:name) { :my_time_field }
-
-        subject { TimeAttribute.named(name) }
-
-        it { should be_a TimeAttribute }
-        its(:name) { should == name }
-        specify { subject.type.format.should == '%Y-%m-%d %H:%M' }
-
-        context 'format specified' do
-          let(:format) { mock "format" }
-
-          subject { TimeAttribute.named name, format: format }
-
-          specify { subject.type.format.should == format }
-        end
-
-        it_should_behave_like "it handles options properly"
-      end
-
       describe "#value_for(pre_type_cast_value)" do
         let(:attribute) { TimeAttribute.new }
 
@@ -71,7 +51,7 @@ module Setsumei
 
         let(:object) { mock "object", :my_time_attribute= => nil }
 
-        let(:time_attribute) { TimeAttribute.named :my_time_attribute }
+        let(:time_attribute) { Attribute.named :my_time_attribute, TimeAttribute.new }
 
         before do
           Build::Key.stub(:for).and_return(key)

@@ -3,31 +3,25 @@ require 'spec_helper'
 module Setsumei
   module Describable
     describe ObjectAttribute do
-      its(:name) { should == nil }
-      specify { subject.type.klass.should == Object }
 
-      describe ".named(name)" do
-        let(:name) { :my_object_field }
+      describe "#initialize(as_a: klass)" do
         let(:my_klass) { Class.new }
 
-        subject { ObjectAttribute.named name, as_a: my_klass }
+        subject { ObjectAttribute.new as_a: my_klass }
 
         it { should be_a ObjectAttribute }
-        its(:name) { should == name }
         specify { subject.type.klass.should == my_klass }
 
         context "klass is left off" do
-          subject { ObjectAttribute.named name }
+          subject { ObjectAttribute.new }
           specify { expect { subject }.to raise_error ArgumentError }
         end
-
-        it_should_behave_like "it handles options properly"
       end
 
       describe "#value_for(pre_type_cast_value)" do
         let(:klass) { mock "klass" }
         let(:pre_type_cast_value) { { hash: "with_values" } }
-        let(:object_attribute) { ObjectAttribute.named :name, as_a: klass }
+        let(:object_attribute) { ObjectAttribute.new as_a: klass }
 
         before do
           klass.stub(:create_from).and_raise(NoMethodError)
@@ -65,7 +59,7 @@ module Setsumei
       end
 
       describe "#is_an_attribute_of_type?" do
-        let(:object_attribute) { ObjectAttribute.new }
+        let(:object_attribute) { ObjectAttribute.new as_a: Object }
 
         subject { object_attribute.is_an_attribute_of_type? type }
 
@@ -93,7 +87,7 @@ module Setsumei
 
         let(:object) { mock "object", :my_object_attribute= => nil }
 
-        let(:object_attribute) { ObjectAttribute.named :my_object_attribute, as_a: mock("object_klass") }
+        let(:object_attribute) { Attribute.named :my_object_attribute, ObjectAttribute.new(as_a: mock("object_klass")) }
         let(:converted_value) { mock "converted_value" }
 
         before do

@@ -5,17 +5,6 @@ module Setsumei
     describe IntAttribute do
       its(:name) { should == nil }
 
-      describe ".named(name)" do
-        let(:name) { :my_int_field }
-
-        subject { IntAttribute.named(name) }
-
-        it { should be_a IntAttribute }
-        its(:name) { should == name }
-
-        it_should_behave_like "it handles options properly"
-      end
-
       describe "#value_for(pre_type_cast_value)" do
         let(:int_attribute) { IntAttribute.new }
 
@@ -59,7 +48,7 @@ module Setsumei
 
         let(:object) { mock "object", :my_int_attribute= => nil }
 
-        let(:int_attribute) { IntAttribute.named :my_int_attribute }
+        let(:int_attribute) { Attribute.named :my_int_attribute, IntAttribute.new }
         let(:converted_value) { mock "converted_value" }
 
         before do

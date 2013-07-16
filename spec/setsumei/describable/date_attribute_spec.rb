@@ -5,26 +5,6 @@ module Setsumei
     describe DateAttribute do
       its(:name) { should == nil }
 
-      describe ".named(name)" do
-        let(:name) { :my_date_field }
-
-        subject { DateAttribute.named(name) }
-
-        it { should be_a DateAttribute }
-        its(:name) { should == name }
-        specify { subject.type.format.should == '%Y-%m-%d' }
-
-        context 'format specified' do
-          let(:format) { mock "format" }
-
-          subject { DateAttribute.named name, format: format }
-
-          specify { subject.type.format.should == format }
-        end
-
-        it_should_behave_like "it handles options properly"
-      end
-
       describe "#value_for(pre_type_cast_value)" do
         let(:attribute) { DateAttribute.new }
 
@@ -71,7 +51,7 @@ module Setsumei
 
         let(:object) { mock "object", :my_date_attribute= => nil }
 
-        let(:date_attribute) { DateAttribute.named :my_date_attribute }
+        let(:date_attribute) { Attribute.named :my_date_attribute, DateAttribute.new }
 
         before do
           Build::Key.stub(:for).and_return(key)

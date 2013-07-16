@@ -22,7 +22,7 @@ module Setsumei
       end
 
       def define field_name, options = {}
-        _defined_attributes[field_name] = attribute_type(options[:as_a]).named field_name, options
+        _defined_attributes[field_name] = Attribute.named field_name, attribute_type(options[:as_a]).new(options)
         attr_accessor field_name
       end
 

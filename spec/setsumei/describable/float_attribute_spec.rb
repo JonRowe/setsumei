@@ -5,17 +5,6 @@ module Setsumei
     describe FloatAttribute do
       its(:name) { should == nil }
 
-      describe ".named(name)" do
-        let(:name) { :my_float_field }
-
-        subject { FloatAttribute.named(name) }
-
-        it { should be_a FloatAttribute }
-        its(:name) { should == name }
-
-        it_should_behave_like "it handles options properly"
-      end
-
       describe "#value_for(pre_type_cast_value)" do
         let(:float_attribute) { FloatAttribute.new }
 
@@ -58,7 +47,7 @@ module Setsumei
 
         let(:object) { mock "object", :my_float_attribute= => nil }
 
-        let(:float_attribute) { FloatAttribute.named :my_float_attribute }
+        let(:float_attribute) { Attribute.named :my_float_attribute, FloatAttribute.new }
         let(:converted_value) { mock "converted_value" }
 
         before do

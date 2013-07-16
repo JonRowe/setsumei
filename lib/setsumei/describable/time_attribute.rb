@@ -2,10 +2,6 @@ module Setsumei
   module Describable
     class TimeAttribute
 
-      def self.named name, options = {}
-        Attribute.named name, new(options)
-      end
-
       def self.new options = {}
         Attribute.new super(options.delete(:format)), options
       end
