@@ -3,78 +3,40 @@ require 'spec_helper'
 module Setsumei
   module Describable
     describe DateAttribute do
-      its(:name) { should == nil }
 
-      describe "#value_for(pre_type_cast_value)" do
+      describe "#initialize(format)" do
+        it 'will default to %Y-%m-%d' do
+          DateAttribute.new.format.should == '%Y-%m-%d'
+        end
+
+        it 'is configurable' do
+          format = double
+          DateAttribute.new(format).format.should == format
+        end
+      end
+
+      describe "#== other" do
+        subject { DateAttribute.new }
+
+        it { should == :date }
+        it { should == DateAttribute }
+        it { should_not eq double }
+      end
+
+      describe "#cast value" do
         let(:attribute) { DateAttribute.new }
 
-        subject { attribute.value_for pre_type_cast_value }
+        subject { attribute.cast value }
 
         context "where pre_type_cast_value is a string" do
-          let(:pre_type_cast_value) { "time" }
+          let(:value) { "time" }
           let(:formatted_value) { mock "formatted_value" }
 
           it "should parse it into a time with format" do
-            Date.should_receive(:strptime).with(pre_type_cast_value.to_s,'%Y-%m-%d').and_return(formatted_value)
+            Date.should_receive(:strptime).with(value,'%Y-%m-%d').and_return(formatted_value)
             subject.should == formatted_value
           end
         end
-      end
-
-      describe "#is_an_attribute_of_type?" do
-        let(:attribute) { DateAttribute.new }
-
-        subject { attribute.is_an_attribute_of_type? type }
-
-        context "where type is :date" do
-          let(:type) { :date }
-          it { should be_true }
-        end
-
-        context "where type is DateAttribute" do
-          let(:type) { DateAttribute }
-          it { should be_true }
-        end
-
-        context "where type is unknown" do
-          let(:type) { mock "an unknown type" }
-          it { should be_false }
-        end
-      end
-
-      describe "set_value_on object, from_value_in: hash" do
-        let(:hash) { Hash.new }
-        let(:key) { "key" }
-        let(:hash_keys) { mock "hash_keys" }
-        let(:value_in_hash) { mock "value_in_hash" }
-        let(:converted_value) { mock "converted_value" }
-
-        let(:object) { mock "object", :my_date_attribute= => nil }
-
-        let(:date_attribute) { Attribute.named :my_date_attribute, DateAttribute.new }
-
-        before do
-          Build::Key.stub(:for).and_return(key)
-          hash[key] = value_in_hash
-          date_attribute.stub(:value_for).and_return(converted_value)
-        end
-
-        subject { date_attribute.set_value_on object, from_value_in: hash }
-
-        it "should detect the key it should use to retrieve the value from the hash" do
-          hash.should_receive(:keys).and_return(hash_keys)
-          Build::Key.should_receive(:for).with(:my_date_attribute, given: hash_keys ).and_return(key)
-          subject
-        end
-        it "should convert the value" do
-          date_attribute.should_receive(:value_for).with(value_in_hash).and_return(converted_value)
-          subject
-        end
-        it "should pass object a value to the attribute described by this class" do
-          object.should_receive(:my_date_attribute=).with(converted_value)
-          subject
-        end
-        it_should_behave_like "it handles lookup keys properly"
       end
     end
   end

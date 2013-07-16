@@ -2,11 +2,6 @@ module Setsumei
   module Describable
     class ObjectAttribute < Attribute
 
-      def self.new options = {}
-        raise ArgumentError.new("you must specify what the object is") unless options.has_key? :as_a
-        Attribute.new super(options.delete(:as_a)), options
-      end
-
       def initialize type = nil
         @klass = type || Object
       end

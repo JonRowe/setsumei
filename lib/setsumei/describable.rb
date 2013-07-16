@@ -22,7 +22,7 @@ module Setsumei
       end
 
       def define field_name, options = {}
-        _defined_attributes[field_name] = Attribute.named field_name, attribute_type(options[:as_a]).new(options)
+        _defined_attributes[field_name] = Attribute.new field_name, attribute_type(options), options
         attr_accessor field_name
       end
 
@@ -67,21 +67,20 @@ module Setsumei
         def _defined_attributes
           (@_defined_attributes ||= {})
         end
-        def attribute_type(type)
-          case type
-            when :boolean   then BooleanAttribute
-            when :string    then StringAttribute
-            when nil        then StringAttribute
-            when :float     then FloatAttribute
-            when :int       then IntAttribute
-            when :date      then DateAttribute
-            when :time      then TimeAttribute
-          else
-            object_attribute_if_a_class(type) or raise(ArgumentError)
-          end
-        end
-        def object_attribute_if_a_class(type)
-          (type.is_a?(Class) && ObjectAttribute)
+
+        def attribute_type(options = {})
+            case options.fetch(:as_a,:string)
+              when :boolean   then BooleanAttribute.new
+              when :string    then StringAttribute.new
+              when nil        then StringAttribute.new
+              when :float     then FloatAttribute.new
+              when :int       then IntAttribute.new
+              when :date      then DateAttribute.new(options[:format])
+              when :time      then TimeAttribute.new(options[:format])
+              when Class      then ObjectAttribute.new(options[:as_a])
+            else
+              raise ArgumentError
+            end
         end
     end
   end

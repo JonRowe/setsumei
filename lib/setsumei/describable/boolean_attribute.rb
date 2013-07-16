@@ -2,10 +2,6 @@ module Setsumei
   module Describable
     class BooleanAttribute
 
-      def self.new options = {}
-        Attribute.new super(), options
-      end
-
       def == other
         :boolean == other || BooleanAttribute == other
       end

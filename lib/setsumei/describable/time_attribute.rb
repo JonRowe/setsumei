@@ -2,11 +2,7 @@ module Setsumei
   module Describable
     class TimeAttribute
 
-      def self.new options = {}
-        Attribute.new super(options.delete(:format)), options
-      end
-
-      def initialize format
+      def initialize format = nil
         @format = format || '%Y-%m-%d %H:%M'
       end
       attr_reader :format

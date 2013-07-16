@@ -2,13 +2,9 @@ module Setsumei
   module Describable
     class Attribute
 
-      def self.named name, attribute
-        attribute.name = name
-        attribute
-      end
-
-      def initialize type, options = {}
-        self.type  = type
+      def initialize name, type, options = {}
+        self.name = name
+        self.type = type
         self.lookup_key = options.delete(:from_within)
         self.options = options.tap { |o| o.delete :as_a }
       end

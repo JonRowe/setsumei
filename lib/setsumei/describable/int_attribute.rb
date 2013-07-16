@@ -2,10 +2,6 @@ module Setsumei
   module Describable
     class IntAttribute
 
-      def self.new options = {}
-        Attribute.new super(), options
-      end
-
       def == other
         :int == other || IntAttribute == other
       end
