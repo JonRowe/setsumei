@@ -12,7 +12,7 @@ shared_examples "it creates an attribute of type" do |_type,options|
     context "where options are specified" do
       it "should set the options upon the attribute" do
         subject.define :field, as_a: _type, with: :options
-        subject.defined_attributes[:field].options.should == { with: :options }
+        subject.defined_attributes[:field].options.should == { with: :options }.merge(options.fetch(:extra_options,{}))
       end
     end
   end

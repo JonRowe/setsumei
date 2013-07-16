@@ -2,16 +2,20 @@ module Setsumei
   module Describable
     class BooleanAttribute
 
-      def self.named(name, options = {})
-        Attribute.named name, options.merge( type: :boolean, klass: self ), &converter
+      def self.named name, options = {}
+        Attribute.named name, new(options)
       end
 
-      def self.new
-        Attribute.new :boolean, self, &converter
+      def self.new options = {}
+        Attribute.new super(), options
       end
 
-      def self.converter
-        -> value { value.to_s.downcase == "true" || value.to_s == "1" }
+      def == other
+        :boolean == other || BooleanAttribute == other
+      end
+
+      def cast value
+        value.to_s.downcase == "true" || value.to_s == "1"
       end
 
     end

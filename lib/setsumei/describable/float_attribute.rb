@@ -2,16 +2,20 @@ module Setsumei
   module Describable
     class FloatAttribute
 
-      def self.named(name, options = {})
-        Attribute.named name, options.merge( type: :float, klass: self ), &converter
+      def self.named name, options = {}
+        Attribute.named name, new(options)
       end
 
-      def self.new
-        Attribute.new :float, self, &converter
+      def self.new options = {}
+        Attribute.new super(), options
       end
 
-      def self.converter
-        -> value { value.to_f }
+      def == other
+        :float == other || FloatAttribute == other
+      end
+
+      def cast value
+        value.to_f
       end
 
     end

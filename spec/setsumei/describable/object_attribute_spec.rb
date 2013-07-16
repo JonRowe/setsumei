@@ -4,7 +4,7 @@ module Setsumei
   module Describable
     describe ObjectAttribute do
       its(:name) { should == nil }
-      its(:klass) { should == Object }
+      specify { subject.type.klass.should == Object }
 
       describe ".named(name)" do
         let(:name) { :my_object_field }
@@ -14,7 +14,7 @@ module Setsumei
 
         it { should be_a ObjectAttribute }
         its(:name) { should == name }
-        its(:klass) { should == my_klass }
+        specify { subject.type.klass.should == my_klass }
 
         context "klass is left off" do
           subject { ObjectAttribute.named name }

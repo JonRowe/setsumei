@@ -2,37 +2,27 @@ module Setsumei
   module Describable
     class Attribute
 
-      def self.named name, options = {}, &converter
-        options = options.dup
-        new(options.delete(:type), options.delete(:klass), &converter).tap do |attribute|
-          attribute.name = name
-          attribute.lookup_key = options.delete(:from_within)
-          attribute.options = options.tap { |o| o.delete :as_a }
-        end
+      def self.named name, attribute
+        attribute.name = name
+        attribute
       end
 
-      def initialize type, klass, &converter
+      def initialize type, options = {}
         self.type  = type
-        self.klass = klass
-        self.converter = converter
+        self.lookup_key = options.delete(:from_within)
+        self.options = options.tap { |o| o.delete :as_a }
       end
 
-      attr_accessor :name, :options, :lookup_key, :converter, :type, :klass
+      attr_accessor :name, :options, :lookup_key, :type, :klass
 
       def is_an_attribute_of_type?(other)
-        type == other || klass == other
+        type == other
       end
-
-      def is_a? other
-        klass == other || super
-      end
-
-      def kind_of? other
-        klass == other || super
-      end
+      alias :is_a?    :is_an_attribute_of_type?
+      alias :kind_of? :is_an_attribute_of_type?
 
       def value_for(pre_type_cast_value)
-        (converter || -> value { value }).(pre_type_cast_value)
+        type.cast pre_type_cast_value
       end
 
       def set_value_on(object, options)

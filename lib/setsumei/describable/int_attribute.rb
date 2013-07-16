@@ -2,16 +2,20 @@ module Setsumei
   module Describable
     class IntAttribute
 
-      def self.named(name, options = {})
-        Attribute.named name, options.merge( type: :int, klass: self ), &converter
+      def self.named name, options = {}
+        Attribute.named name, new(options)
       end
 
-      def self.new
-        Attribute.new :int, self, &converter
+      def self.new options = {}
+        Attribute.new super(), options
       end
 
-      def self.converter
-        -> value { value.to_f.round }
+      def == other
+        :int == other || IntAttribute == other
+      end
+
+      def cast value
+        value.to_f.round
       end
 
     end

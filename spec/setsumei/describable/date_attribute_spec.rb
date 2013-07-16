@@ -12,14 +12,14 @@ module Setsumei
 
         it { should be_a DateAttribute }
         its(:name) { should == name }
-        its(:format) { should == '%Y-%m-%d' }
+        specify { subject.type.format.should == '%Y-%m-%d' }
 
         context 'format specified' do
           let(:format) { mock "format" }
 
           subject { DateAttribute.named name, format: format }
 
-          its(:format) { should == format }
+          specify { subject.type.format.should == format }
         end
 
         it_should_behave_like "it handles options properly"
@@ -35,7 +35,7 @@ module Setsumei
           let(:formatted_value) { mock "formatted_value" }
 
           it "should parse it into a time with format" do
-            Date.should_receive(:strptime).with(pre_type_cast_value.to_s,attribute.format).and_return(formatted_value)
+            Date.should_receive(:strptime).with(pre_type_cast_value.to_s,'%Y-%m-%d').and_return(formatted_value)
             subject.should == formatted_value
           end
         end
