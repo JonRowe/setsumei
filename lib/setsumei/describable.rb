@@ -1,3 +1,4 @@
+require 'setsumei/describable/attribute'
 require 'setsumei/describable/boolean_attribute'
 require 'setsumei/describable/string_attribute'
 require 'setsumei/describable/float_attribute'

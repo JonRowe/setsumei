@@ -1,6 +1,6 @@
 module Setsumei
   module Describable
-    class ObjectAttribute
+    class ObjectAttribute < Attribute
 
       def ObjectAttribute.named(name,options = {})
         options = options.dup
@@ -33,20 +33,7 @@ module Setsumei
         type == :object || type == self.class || type == self.klass
       end
 
-      def set_value_on(object, options)
-        object.send accessor, value_from_hash(options[:from_value_in])
-      end
 
-      private
-        def accessor
-          :"#{name}="
-        end
-        def value_from_hash(hash)
-          value_for hash[ key_for(hash)]
-        end
-        def key_for(hash)
-          lookup_key || Build::Key.for(name, given: hash.keys)
-        end
     end
   end
 end
