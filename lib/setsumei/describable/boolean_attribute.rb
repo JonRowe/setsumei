@@ -7,11 +7,7 @@ module Setsumei
       end
 
       def self.new
-        Attribute.new.tap do |attribute|
-          attribute.converter = converter
-          attribute.type  = :boolean
-          attribute.klass = self
-        end
+        Attribute.new :boolean, self, &converter
       end
 
       def self.converter

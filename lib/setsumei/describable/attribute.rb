@@ -2,16 +2,19 @@ module Setsumei
   module Describable
     class Attribute
 
-      def self.named(name, options = {}, &converter)
+      def self.named name, options = {}, &converter
         options = options.dup
-        new.tap do |attribute|
-          attribute.converter = converter
+        new(options.delete(:type), options.delete(:klass), &converter).tap do |attribute|
           attribute.name = name
-          attribute.type = options.delete(:type)
-          attribute.klass = options.delete(:klass)
           attribute.lookup_key = options.delete(:from_within)
           attribute.options = options.tap { |o| o.delete :as_a }
         end
+      end
+
+      def initialize type, klass, &converter
+        self.type  = type
+        self.klass = klass
+        self.converter = converter
       end
 
       attr_accessor :name, :options, :lookup_key, :converter, :type, :klass
