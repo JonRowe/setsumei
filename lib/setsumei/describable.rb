@@ -4,8 +4,7 @@ require 'setsumei/describable/string_attribute'
 require 'setsumei/describable/float_attribute'
 require 'setsumei/describable/int_attribute'
 require 'setsumei/describable/object_attribute'
-require 'setsumei/describable/time_attribute'
-require 'setsumei/describable/date_attribute'
+require 'setsumei/describable/date_time_attribute'
 require 'setsumei/describable/collection'
 
 module Setsumei
@@ -75,8 +74,8 @@ module Setsumei
               when nil        then StringAttribute.new
               when :float     then FloatAttribute.new
               when :int       then IntAttribute.new
-              when :date      then DateAttribute.new(options[:format])
-              when :time      then TimeAttribute.new(options[:format])
+              when :date      then DateTimeAttribute.new(:date, options[:format], Date)
+              when :time      then DateTimeAttribute.new(:time, options[:format], Time)
               when Class      then ObjectAttribute.new(options[:as_a])
             else
               raise ArgumentError

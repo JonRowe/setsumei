@@ -2,29 +2,26 @@ require 'spec_helper'
 
 module Setsumei
   module Describable
-    describe DateAttribute do
+    describe DateTimeAttribute do
 
       describe "#initialize(format)" do
-        it 'will default to %Y-%m-%d' do
-          DateAttribute.new.format.should == '%Y-%m-%d'
-        end
-
         it 'is configurable' do
           format = double
-          DateAttribute.new(format).format.should == format
+          DateTimeAttribute.new(:date, format, Date).format.should == format
         end
       end
 
       describe "#== other" do
-        subject { DateAttribute.new }
+        subject { DateTimeAttribute.new :date, '%Y-%m-%d', Date }
 
         it { should == :date }
-        it { should == DateAttribute }
+        it { should == DateTimeAttribute }
         it { should_not eq double }
       end
 
+
       describe "#cast value" do
-        let(:attribute) { DateAttribute.new }
+        let(:attribute) { DateTimeAttribute.new :date, '%Y-%m-%d', Date }
 
         subject { attribute.cast value }
 

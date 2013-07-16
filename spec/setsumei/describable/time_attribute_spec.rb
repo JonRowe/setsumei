@@ -2,29 +2,29 @@ require 'spec_helper'
 
 module Setsumei
   module Describable
-    describe TimeAttribute do
+    describe DateTimeAttribute do
 
       describe "#initialize(format)" do
         it 'will default to %Y-%m-%d %H:%M' do
-          TimeAttribute.new.format.should == '%Y-%m-%d %H:%M'
+          DateTimeAttribute.new(:time, nil, Time).format.should == '%Y-%m-%d %H:%M'
         end
 
         it 'is configurable' do
           format = double
-          TimeAttribute.new(format).format.should == format
+          DateTimeAttribute.new(:time, format, Time).format.should == format
         end
       end
 
       describe "#== other" do
-        subject { TimeAttribute.new }
+        subject { DateTimeAttribute.new :time, '%Y-%m-%d %H:%M', Time }
 
         it { should == :time }
-        it { should == TimeAttribute }
+        it { should == DateTimeAttribute }
         it { should_not eq double }
       end
 
       describe "#cast value" do
-        let(:attribute) { TimeAttribute.new }
+        let(:attribute) { DateTimeAttribute.new :time, '%Y-%m-%d %H:%M', Time }
 
         subject { attribute.cast value }
 
