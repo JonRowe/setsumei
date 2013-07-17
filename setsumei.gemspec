@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/JonRowe/setsumei"
   s.summary     = %q{A tool for describing API's as ruby objects}
   s.description = %q{A tool for describing API's as ruby objects. Currently supports building these objects from JSON}
+  s.license     = "MIT"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {spec,features}/*`.split("\n")
