@@ -3,20 +3,23 @@ require 'spec_helper'
 module Setsumei
   module Describable
     describe Collection do
+
       describe "initialization" do
-        its(:klass) { should be_nil }
-        its(:options) { should be_nil }
+        let(:collection) { Collection.new }
+
+        specify { expect(collection.klass).to be_nil }
+        specify { expect(collection.options).to be_nil }
       end
 
       describe ".of(klass,options)" do
         let(:klass) { mock "klass" }
         let(:options) { mock "options" }
 
-        subject { Collection.of klass, options }
+        let(:collection) { Collection.of klass, options }
 
-        it { should be_a Collection }
-        its(:klass) { should == klass }
-        its(:options) { should == options }
+        specify { expect(collection).to be_a Collection }
+        specify { expect(collection.klass).to eq klass }
+        specify { expect(collection.options).to eq options }
       end
 
       describe "#set_value_on(object, from_value_in: data) where data is a direct single or collection of values" do

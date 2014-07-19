@@ -8,10 +8,9 @@ module Setsumei
 
       describe '#initialize name, type' do
         let(:type) { double }
-        subject { attribute }
 
-        its(:name) { should == :name }
-        its(:type) { should == type }
+        specify { expect(attribute.name).to eq :name }
+        specify { expect(attribute.type).to eq type }
       end
 
       describe "#value_for(value)" do
