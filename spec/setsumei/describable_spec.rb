@@ -71,11 +71,11 @@ module Setsumei
 
     describe ".collection_of(klass,options)" do
       let(:another_klass) { Class.new }
-      let(:options) { mock "options" }
-      let(:element) { mock "element" }
-      let(:element_2) { mock "element_2" }
+      let(:options) { double "options" }
+      let(:element) { double "element" }
+      let(:element_2) { double "element_2" }
       let(:instance) { klass.new }
-      let(:collection) { mock "collection" }
+      let(:collection) { double "collection" }
 
       before do
         Describable::Collection.stub(:of).and_return(collection)

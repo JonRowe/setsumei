@@ -13,7 +13,7 @@ module Setsumei
       end
 
       describe "#cast data" do
-        let(:klass) { mock "klass" }
+        let(:klass) { double "klass" }
         let(:data)  { { hash: "with_values" } }
         let(:object_attribute) { ObjectAttribute.new(klass) }
 

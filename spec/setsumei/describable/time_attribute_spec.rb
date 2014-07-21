@@ -30,7 +30,7 @@ module Setsumei
 
         context "where pre_type_cast_value is a string" do
           let(:value) { "time" }
-          let(:formatted_value) { mock "formatted_value" }
+          let(:formatted_value) { double "formatted_value" }
 
           it "should parse it into a time with format" do
             Time.should_receive(:strptime).with(value, '%Y-%m-%d %H:%M').and_return(formatted_value)

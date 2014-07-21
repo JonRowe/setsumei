@@ -25,7 +25,7 @@ module Setsumei
 
         context "where the value isn't a string" do
           let(:to_s_value) { "stringified value of thing thats a string" }
-          let(:pre_type_cast_value) { mock "something thats not a string", to_s: to_s_value }
+          let(:pre_type_cast_value) { double "something thats not a string", to_s: to_s_value }
 
           it { should == to_s_value }
         end

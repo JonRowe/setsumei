@@ -46,12 +46,12 @@ module Setsumei
       describe "set_value_on object, from_value_in: hash" do
         let(:hash) { Hash.new }
         let(:key) { "key" }
-        let(:hash_keys) { mock "hash_keys" }
-        let(:value_in_hash) { mock "value_in_hash" }
+        let(:hash_keys) { double "hash_keys" }
+        let(:value_in_hash) { double "value_in_hash" }
 
-        let(:object) { mock "object", :name= => nil }
+        let(:object) { double "object", :name= => nil }
 
-        let(:converted_value) { mock "converted_value" }
+        let(:converted_value) { double "converted_value" }
         let(:type) { double "type", cast: converted_value }
 
         before do

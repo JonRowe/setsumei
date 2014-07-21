@@ -3,12 +3,12 @@ require 'spec_helper'
 module Setsumei
   describe Build do
     describe ".a(klass,from: hash_data)" do
-      let(:klass) { mock "class" }
+      let(:klass) { double "class" }
       let(:hash_data) { Hash.new }
 
       let(:defined_attributes) { { an_attribute: attribute } }
-      let(:attribute) { mock "attribute" }
-      let(:object) { mock "object" }
+      let(:attribute) { double "attribute" }
+      let(:object) { double "object" }
 
       before do
         klass.stub(:defined_attributes).and_return(defined_attributes)
@@ -29,8 +29,8 @@ module Setsumei
       it { should == object }
     end
     describe ".a(String,from: hash_data)" do
-      let(:hash_data) { mock "hash_data", to_s: string }
-      let(:string) { mock "string" }
+      let(:hash_data) { double "hash_data", to_s: string }
+      let(:string) { double "string" }
 
       subject { Build.a String, from: hash_data }
 
@@ -41,8 +41,8 @@ module Setsumei
       it { should == string }
     end
     describe ".a(Float,from: hash_data)" do
-      let(:hash_data) { mock "hash_data", to_f: float }
-      let(:float) { mock "float" }
+      let(:hash_data) { double "hash_data", to_f: float }
+      let(:float) { double "float" }
 
       subject { Build.a Float, from: hash_data }
 
@@ -54,12 +54,12 @@ module Setsumei
     end
     describe ".a(klass,from: hash_data) error conditions" do
       context "klass doesn't have defined attributes" do
-        let(:klass) { mock "class" }
+        let(:klass) { double "class" }
         specify { expect { Build.a klass, from: {} }.to raise_error ArgumentError }
       end
 
       context "hash data isnt provided" do
-        let(:klass) { mock "class", defined_attributes: {} }
+        let(:klass) { double "class", defined_attributes: {} }
         specify { expect { Build.a klass }.to raise_error ArgumentError }
       end
     end

@@ -12,8 +12,8 @@ module Setsumei
       end
 
       describe ".of(klass,options)" do
-        let(:klass) { mock "klass" }
-        let(:options) { mock "options" }
+        let(:klass) { double "klass" }
+        let(:options) { double "options" }
 
         let(:collection) { Collection.of klass, options }
 
@@ -23,9 +23,9 @@ module Setsumei
       end
 
       describe "#set_value_on(object, from_value_in: data) where data is a direct single or collection of values" do
-        let(:object) { mock "object", :<< => nil }
+        let(:object) { double "object", :<< => nil }
 
-        let(:klass) { mock "a klass" }
+        let(:klass) { double "a klass" }
         let(:collection) { Collection.of klass, from_value_in: data, direct_collection: true }
 
         subject { collection.set_value_on object, from_value_in: data }
@@ -38,8 +38,8 @@ module Setsumei
           end
         end
         context "single value" do
-          let(:data) { mock "data" }
-          let(:single_instance) { mock "single_instance" }
+          let(:data) { double "data" }
+          let(:single_instance) { double "single_instance" }
 
           before { Build.stub(:a).and_return single_instance }
 
@@ -53,13 +53,13 @@ module Setsumei
           end
         end
         context "multiple values" do
-          let(:a_value) { mock "a_value" }
-          let(:another_value) { mock "another_value" }
-          let(:more_values) { mock "more_values" }
+          let(:a_value) { double "a_value" }
+          let(:another_value) { double "another_value" }
+          let(:more_values) { double "more_values" }
 
-          let(:first_instance) { mock "first_instance" }
-          let(:second_instance) { mock "second_instance" }
-          let(:final_instance) { mock "final_instance" }
+          let(:first_instance) { double "first_instance" }
+          let(:second_instance) { double "second_instance" }
+          let(:final_instance) { double "final_instance" }
 
           let(:data) { [a_value,another_value,more_values] }
 
@@ -80,9 +80,9 @@ module Setsumei
         end
       end
       describe "#set_value_on(object, from_value_in: hash)" do
-        let(:object) { mock "object" }
+        let(:object) { double "object" }
         let(:hash) { Hash.new }
-        let(:hash_keys) { mock "hash_keys" }
+        let(:hash_keys) { double "hash_keys" }
         let(:key) { "aHashKey" }
 
         let(:klass) { AModule::Klass }
@@ -118,8 +118,8 @@ module Setsumei
         end
 
         context "single value" do
-          let(:single_value) { mock "single_value", to_a: nil }
-          let(:single_instance) { mock "single_instance" }
+          let(:single_value) { double "single_value", to_a: nil }
+          let(:single_instance) { double "single_instance" }
 
           before do
             hash[key] = single_value
@@ -137,13 +137,13 @@ module Setsumei
           end
         end
         context "multiple values" do
-          let(:a_value) { mock "a_value" }
-          let(:another_value) { mock "another_value" }
-          let(:more_values) { mock "more_values" }
+          let(:a_value) { double "a_value" }
+          let(:another_value) { double "another_value" }
+          let(:more_values) { double "more_values" }
 
-          let(:first_instance) { mock "first_instance" }
-          let(:second_instance) { mock "second_instance" }
-          let(:final_instance) { mock "final_instance" }
+          let(:first_instance) { double "first_instance" }
+          let(:second_instance) { double "second_instance" }
+          let(:final_instance) { double "final_instance" }
 
           before do
             hash[key] = [a_value,another_value,more_values]
