@@ -11,22 +11,22 @@ module Setsumei
       let(:object) { double "object" }
 
       before do
-        klass.stub(:defined_attributes).and_return(defined_attributes)
-        klass.stub(:new).and_return(object)
-        attribute.stub(:set_value_on)
+        allow(klass).to receive(:defined_attributes) { defined_attributes }
+        allow(klass).to receive(:new) { object }
+        allow(attribute).to receive(:set_value_on)
       end
 
       subject { Build.a klass, from: hash_data }
 
       it "should instantiate klass" do
-        klass.should_receive(:new).and_return(object)
+        expect(klass).to receive(:new) { object }
         subject
       end
       it "should set value on object using attribute" do
-        attribute.should_receive(:set_value_on).with(object, from_value_in: hash_data )
+        expect(attribute).to receive(:set_value_on).with(object, from_value_in: hash_data )
         subject
       end
-      it { should == object }
+      it { is_expected.to eq object }
     end
     describe ".a(String,from: hash_data)" do
       let(:hash_data) { double "hash_data", to_s: string }
@@ -35,10 +35,10 @@ module Setsumei
       subject { Build.a String, from: hash_data }
 
       it "should call to_s on hash_data" do
-        hash_data.should_receive(:to_s).and_return(string)
+        expect(hash_data).to receive(:to_s) { string }
         subject
       end
-      it { should == string }
+      it { is_expected.to eq string }
     end
     describe ".a(Float,from: hash_data)" do
       let(:hash_data) { double "hash_data", to_f: float }
@@ -47,10 +47,10 @@ module Setsumei
       subject { Build.a Float, from: hash_data }
 
       it "should call to_f on hash_data" do
-        hash_data.should_receive(:to_f).and_return(float)
+        expect(hash_data).to receive(:to_f) { float }
         subject
       end
-      it { should == float }
+      it { is_expected.to eq float }
     end
     describe ".a(klass,from: hash_data) error conditions" do
       context "klass doesn't have defined attributes" do

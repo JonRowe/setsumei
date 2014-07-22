@@ -12,32 +12,32 @@ module Setsumei
 
     describe ".defined_attributes" do
       it "should have a list of defined attributes" do
-        klass.should respond_to :defined_attributes
-        klass.defined_attributes.should be_a Hash
+        expect(klass).to respond_to :defined_attributes
+        expect(klass.defined_attributes).to be_a Hash
       end
       it "should have a definition method" do
-        klass.should respond_to :define
+        expect(klass).to respond_to :define
       end
       it "should return defined attributes as a duplicated hash" do
         klass.define :field
-        klass.defined_attributes[:field].should_not be_nil
+        expect(klass.defined_attributes[:field]).not_to be_nil
         klass.defined_attributes.delete(:field)
-        klass.defined_attributes[:field].should_not be_nil
+        expect(klass.defined_attributes[:field]).not_to be_nil
       end
     end
 
     describe ".define" do
       it "should allow defining of attributes" do
         klass.define :field
-        klass.defined_attributes[:field].should_not be_nil
+        expect(klass.defined_attributes[:field]).not_to be_nil
       end
       it "should create string attributes by default" do
         klass.define :field
-        klass.defined_attributes[:field].should be_a Describable::StringAttribute
+        expect(klass.defined_attributes[:field]).to be_a Describable::StringAttribute
       end
       it "should have set the name on the attribute to be the field name" do
         klass.define :field
-        klass.defined_attributes[:field].name.should == :field
+        expect(klass.defined_attributes[:field].name).to eq :field
       end
 
       context "where setting a specific type" do
@@ -64,7 +64,7 @@ module Setsumei
       it "should allow me set to and retrieve values for my attribute" do
         klass.new.tap do |object|
           object.my_string_attribute = "Hey Everybody!"
-          object.my_string_attribute.should == "Hey Everybody!"
+          expect(object.my_string_attribute).to eq "Hey Everybody!"
         end
       end
     end
@@ -78,7 +78,7 @@ module Setsumei
       let(:collection) { double "collection" }
 
       before do
-        Describable::Collection.stub(:of).and_return(collection)
+        allow(Describable::Collection).to receive(:of) { collection }
       end
 
       subject { klass.collection_of another_klass, options }
@@ -94,40 +94,40 @@ module Setsumei
             true
           end
           it "should be testable with include" do
-            instance.should include element
+            expect(instance).to include element
           end
           it "should be accessible with []" do
-            instance[0].should == element
+            expect(instance[0]).to eq element
           end
           it "should settable with []=" do
             instance[0] = element_2
-            instance[0].should == element_2
+            expect(instance[0]).to eq element_2
           end
           it "should be accessible with first" do
-            instance.first.should == element
+            expect(instance.first).to eq element
           end
           it "should be iterable over" do
             values = []
             instance.each { |value| values << value }
-            values.should == [element]
+            expect(values).to eq [element]
           end
           it "should be injectable" do
-            instance.inject({}) { |b,c| b[b.size.to_s] = c; b }.should == { "0" => element }
+            expect(instance.inject({}) { |b,c| b[b.size.to_s] = c; b }).to eq "0" => element
           end
           it "should be mappable" do
             instance << element_2
-            instance.map { |a| [a] }.should == [[element],[element_2]]
+            expect(instance.map { |a| [a] }).to eq [[element],[element_2]]
           end
           it "should be comparable to an array" do
-            instance.should == [element]
+            expect(instance).to eq [element]
           end
         end
       end
 
       it "should setup a describable collection" do
-        Describable::Collection.should_receive(:of).with(another_klass,options).and_return(collection)
+        expect(Describable::Collection).to receive(:of).with(another_klass,options) { collection }
         subject
-        klass.defined_attributes.values.should include collection
+        expect(klass.defined_attributes.values).to include collection
       end
     end
   end

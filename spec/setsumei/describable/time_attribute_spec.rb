@@ -6,21 +6,21 @@ module Setsumei
 
       describe "#initialize(format)" do
         it 'will default to %Y-%m-%d %H:%M' do
-          DateTimeAttribute.new(:time, nil, Time).format.should == '%Y-%m-%d %H:%M'
+          expect(DateTimeAttribute.new(:time, nil, Time).format).to eq '%Y-%m-%d %H:%M'
         end
 
         it 'is configurable' do
           format = double
-          DateTimeAttribute.new(:time, format, Time).format.should == format
+          expect(DateTimeAttribute.new(:time, format, Time).format).to eq format
         end
       end
 
       describe "#== other" do
         subject { DateTimeAttribute.new :time, '%Y-%m-%d %H:%M', Time }
 
-        it { should == :time }
-        it { should == DateTimeAttribute }
-        it { should_not eq double }
+        it { is_expected.to eq :time }
+        it { is_expected.to eq DateTimeAttribute }
+        it { is_expected.not_to eq double }
       end
 
       describe "#cast value" do
@@ -33,8 +33,8 @@ module Setsumei
           let(:formatted_value) { double "formatted_value" }
 
           it "should parse it into a time with format" do
-            Time.should_receive(:strptime).with(value, '%Y-%m-%d %H:%M').and_return(formatted_value)
-            subject.should == formatted_value
+            expect(Time).to receive(:strptime).with(value, '%Y-%m-%d %H:%M') { formatted_value }
+            expect(subject).to eq formatted_value
           end
         end
       end

@@ -9,7 +9,7 @@ module Setsumei
 
         subject { ObjectAttribute.new my_klass }
 
-        specify { subject.klass.should == my_klass }
+        specify { expect(subject.klass).to eq my_klass }
       end
 
       describe "#cast data" do
@@ -18,37 +18,33 @@ module Setsumei
         let(:object_attribute) { ObjectAttribute.new(klass) }
 
         before do
-          klass.stub(:create_from).and_raise(NoMethodError)
+          allow(klass).to receive(:create_from).and_raise(NoMethodError)
         end
 
         subject { object_attribute.cast data }
 
         it "should use the Builder to produce a object with klass" do
-          Build.should_receive(:a).with(klass, from: data)
+          expect(Build).to receive(:a).with(klass, from: data)
           subject
         end
 
         context "there is no data for this object" do
           context "empty hash" do
             let(:data) { {} }
-            it { should be_nil }
+            it { is_expected.to be_nil }
           end
           context "nil" do
             let(:data) { nil }
-            it { should be_nil }
+            it { is_expected.to be_nil }
           end
         end
 
         context "klass responds to create_from" do
           let(:pre_fab_object) { double "pre_fab_object" }
 
-          before do
-            klass.unstub(:create_from)
-          end
-
           it "should build the klass itself" do
-            klass.should_receive(:create_from).with(data).and_return(pre_fab_object)
-            subject.should == pre_fab_object
+            expect(klass).to receive(:create_from).with(data) { pre_fab_object }
+            expect(subject).to eq pre_fab_object
           end
         end
       end
@@ -58,10 +54,10 @@ module Setsumei
 
         subject { ObjectAttribute.new klass }
 
-        it { should eq :object }
-        it { should eq klass }
-        it { should eq ObjectAttribute }
-        it { should_not eq double("an unknown type") }
+        it { is_expected.to eq :object }
+        it { is_expected.to eq klass }
+        it { is_expected.to eq ObjectAttribute }
+        it { is_expected.not_to eq double("an unknown type") }
       end
 
     end

@@ -7,16 +7,16 @@ module Setsumei
       describe "#initialize(format)" do
         it 'is configurable' do
           format = double
-          DateTimeAttribute.new(:date, format, Date).format.should == format
+          expect(DateTimeAttribute.new(:date, format, Date).format).to eq format
         end
       end
 
       describe "#== other" do
         subject { DateTimeAttribute.new :date, '%Y-%m-%d', Date }
 
-        it { should == :date }
-        it { should == DateTimeAttribute }
-        it { should_not eq double }
+        it { is_expected.to eq :date }
+        it { is_expected.to eq DateTimeAttribute }
+        it { is_expected.not_to eq double }
       end
 
 
@@ -30,8 +30,8 @@ module Setsumei
           let(:formatted_value) { double "formatted_value" }
 
           it "should parse it into a time with format" do
-            Date.should_receive(:strptime).with(value,'%Y-%m-%d').and_return(formatted_value)
-            subject.should == formatted_value
+            expect(Date).to receive(:strptime).with(value,'%Y-%m-%d') { formatted_value }
+            expect(subject).to eq formatted_value
           end
         end
       end

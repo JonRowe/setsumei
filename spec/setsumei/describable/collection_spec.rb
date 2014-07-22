@@ -33,7 +33,7 @@ module Setsumei
         context "nil value" do
           let(:data) { nil }
           it "should protect against instances where there are attributes, but not for our defined element keys" do
-            object.should_not_receive(:<<)
+            expect(object).not_to receive(:<<)
             subject
           end
         end
@@ -41,14 +41,14 @@ module Setsumei
           let(:data) { double "data" }
           let(:single_instance) { double "single_instance" }
 
-          before { Build.stub(:a).and_return single_instance }
+          before { allow(Build).to receive(:a) { single_instance } }
 
           it "should build a single instance of klass" do
-            Build.should_receive(:a).with(klass, from: data).and_return(single_instance)
+            expect(Build).to receive(:a).with(klass, from: data) { single_instance }
             subject
           end
           it "should append this to the object" do
-            object.should_receive(:<<).with(single_instance)
+            expect(object).to receive(:<<).with(single_instance)
             subject
           end
         end
@@ -63,18 +63,18 @@ module Setsumei
 
           let(:data) { [a_value,another_value,more_values] }
 
-          before { Build.stub(:a).and_return( first_instance, second_instance, final_instance ) }
+          before { allow(Build).to receive(:a).and_return( first_instance, second_instance, final_instance ) }
 
           it "should build multiple instances of klass" do
-            Build.should_receive(:a).with(klass, from: a_value)#and_return(first_instance)
-            Build.should_receive(:a).with(klass, from: another_value)#and_return(second_instance)
-            Build.should_receive(:a).with(klass, from: more_values)#and_return(final_instance)
+            expect(Build).to receive(:a).with(klass, from: a_value)#and_return(first_instance)
+            expect(Build).to receive(:a).with(klass, from: another_value)#and_return(second_instance)
+            expect(Build).to receive(:a).with(klass, from: more_values)#and_return(final_instance)
             subject
           end
           it "should append all of these to the object" do
-            object.should_receive(:<<).with(first_instance)
-            object.should_receive(:<<).with(second_instance)
-            object.should_receive(:<<).with(final_instance)
+            expect(object).to receive(:<<).with(first_instance)
+            expect(object).to receive(:<<).with(second_instance)
+            expect(object).to receive(:<<).with(final_instance)
             subject
           end
         end
@@ -94,25 +94,25 @@ module Setsumei
             class Klass
             end
           end
-          hash.stub(:keys).and_return(hash_keys)
-          Build::Key.stub(:for).and_return(key)
+          allow(hash).to receive(:keys) { hash_keys }
+          allow(Build::Key).to receive(:for) { key }
           hash[key] = []
-          Build.stub(:a)
+          allow(Build).to receive(:a)
         end
 
         subject { collection.set_value_on object, from_value_in: hash }
 
         it "should detect they key it should use to retreive the values from the hash" do
-          hash.should_receive(:keys).and_return(hash_keys)
-          Build::Key.should_receive(:for).with( "Klass", given: hash_keys).and_return(key)
+          expect(hash).to receive(:keys) { hash_keys }
+          expect(Build::Key).to receive(:for).with( "Klass", given: hash_keys) { key }
           subject
         end
 
         context "nil value" do
-          specify { collection.set_value_on(object).should be_nil }
+          specify { expect(collection.set_value_on(object)).to be_nil }
           it "should protect against instances where there are attributes, but not for our defined element keys" do
             hash = { from_value_in: {"@size"=>"0"} }
-            object.should_not_receive(:<<)
+            expect(object).not_to receive(:<<)
             collection.set_value_on(object,hash)
           end
         end
@@ -123,16 +123,16 @@ module Setsumei
 
           before do
             hash[key] = single_value
-            Build.stub(:a).and_return single_instance
-            object.stub(:<<)
+            allow(Build).to receive(:a) { single_instance }
+            allow(object).to receive(:<<)
           end
 
           it "should build a single instance of klass" do
-            Build.should_receive(:a).with(klass, from: single_value).and_return(single_instance)
+            expect(Build).to receive(:a).with(klass, from: single_value) { single_instance }
             subject
           end
           it "should append this to the object" do
-            object.should_receive(:<<).with(single_instance)
+            expect(object).to receive(:<<).with(single_instance)
             subject
           end
         end
@@ -147,20 +147,20 @@ module Setsumei
 
           before do
             hash[key] = [a_value,another_value,more_values]
-            Build.stub(:a).and_return( first_instance, second_instance, final_instance )
-            object.stub(:<<)
+            allow(Build).to receive(:a).and_return( first_instance, second_instance, final_instance )
+            allow(object).to receive(:<<)
           end
 
           it "should build multiple instances of klass" do
-            Build.should_receive(:a).with(klass, from: a_value)#and_return(first_instance)
-            Build.should_receive(:a).with(klass, from: another_value)#and_return(second_instance)
-            Build.should_receive(:a).with(klass, from: more_values)#and_return(final_instance)
+            expect(Build).to receive(:a).with(klass, from: a_value)#and_return(first_instance)
+            expect(Build).to receive(:a).with(klass, from: another_value)#and_return(second_instance)
+            expect(Build).to receive(:a).with(klass, from: more_values)#and_return(final_instance)
             subject
           end
           it "should append all of these to the object" do
-            object.should_receive(:<<).with(first_instance)
-            object.should_receive(:<<).with(second_instance)
-            object.should_receive(:<<).with(final_instance)
+            expect(object).to receive(:<<).with(first_instance)
+            expect(object).to receive(:<<).with(second_instance)
+            expect(object).to receive(:<<).with(final_instance)
             subject
           end
         end
@@ -171,7 +171,7 @@ module Setsumei
           end
 
           it "should detect they key it should use to retreive the values from the hash" do
-            Build::Key.should_receive(:for).with( "SpecialKeyLocation", given: hash_keys).and_return(key)
+            expect(Build::Key).to receive(:for).with( "SpecialKeyLocation", given: hash_keys) { key }
             subject
           end
         end

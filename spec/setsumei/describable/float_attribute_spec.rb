@@ -7,19 +7,19 @@ module Setsumei
       describe "#== other" do
         subject { FloatAttribute.new }
 
-        it { should == :float }
-        it { should == FloatAttribute }
-        it { should_not eq double }
+        it { is_expected.to eq :float }
+        it { is_expected.to eq FloatAttribute }
+        it { is_expected.not_to eq double }
       end
 
       describe "#cast value" do
         let(:float_attribute) { FloatAttribute.new }
 
         context "where the value is a float" do
-          specify { float_attribute.cast(10.2).should == 10.2 }
+          specify { expect(float_attribute.cast(10.2)).to eq 10.2 }
         end
         context "where the value isn't a float" do
-          specify { float_attribute.cast("10.2").should == 10.2 }
+          specify { expect(float_attribute.cast("10.2")).to eq 10.2 }
         end
       end
 

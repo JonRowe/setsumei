@@ -7,23 +7,23 @@ module Setsumei
       describe "#== other" do
         subject { BooleanAttribute.new }
 
-        it { should == :boolean }
-        it { should == BooleanAttribute }
-        it { should_not eq double }
+        it { is_expected.to eq :boolean }
+        it { is_expected.to eq BooleanAttribute }
+        it { is_expected.not_to eq double }
       end
 
       describe "#cast value" do
         let(:boolean_attribute) { BooleanAttribute.new }
 
         context "where the value is a boolean" do
-          specify { boolean_attribute.cast(true).should === true }
-          specify { boolean_attribute.cast(false).should === false }
+          specify { expect(boolean_attribute.cast(true)).to be === true }
+          specify { expect(boolean_attribute.cast(false)).to be === false }
         end
         context "where the value isn't a boolean" do
-          specify { boolean_attribute.cast("false").should === false }
-          specify { boolean_attribute.cast("true").should === true }
-          specify { boolean_attribute.cast("True").should === true }
-          specify { boolean_attribute.cast("1").should === true }
+          specify { expect(boolean_attribute.cast("false")).to be === false }
+          specify { expect(boolean_attribute.cast("true")).to be === true }
+          specify { expect(boolean_attribute.cast("True")).to be === true }
+          specify { expect(boolean_attribute.cast("1")).to be === true }
         end
       end
 

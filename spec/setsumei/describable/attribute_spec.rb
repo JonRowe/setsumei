@@ -19,11 +19,11 @@ module Setsumei
         let(:cast)  { double "cast" }
 
         it 'will cast value to type' do
-          type.should_receive(:cast).with(value)
+          expect(type).to receive(:cast).with(value)
           attribute.value_for value
         end
         it 'will return the cast value' do
-          attribute.value_for(value).should == cast
+          expect(attribute.value_for(value)).to eq cast
         end
       end
 
@@ -34,11 +34,11 @@ module Setsumei
           let(:result) { double "result" }
 
           it 'compares using type' do
-            type.should_receive(:==).with(other)
+            expect(type).to receive(:==).with(other)
             attribute.send meth, other
           end
           it 'returns the value' do
-            attribute.send(meth, other).should eq result
+            expect(attribute.send(meth, other)).to eq result
           end
         end
       end
@@ -55,23 +55,23 @@ module Setsumei
         let(:type) { double "type", cast: converted_value }
 
         before do
-          Build::Key.stub(:for).and_return(key)
+          allow(Build::Key).to receive(:for) { key }
           hash[key] = value_in_hash
         end
 
         subject { attribute.set_value_on object, from_value_in: hash }
 
         it "should detect the key it should use to retrieve the value from the hash" do
-          hash.should_receive(:keys).and_return(hash_keys)
-          Build::Key.should_receive(:for).with(:name, given: hash_keys ).and_return(key)
+          expect(hash).to receive(:keys) { hash_keys }
+          expect(Build::Key).to receive(:for).with(:name, given: hash_keys ) { key }
           subject
         end
         it "should convert the value" do
-          attribute.should_receive(:value_for).with(value_in_hash).and_return(converted_value)
+          expect(attribute).to receive(:value_for).with(value_in_hash) { converted_value }
           subject
         end
         it "should pass object a value to the attribute described by this class" do
-          object.should_receive(:name=).with(converted_value)
+          expect(object).to receive(:name=).with(converted_value)
           subject
         end
 
@@ -82,8 +82,8 @@ module Setsumei
           end
 
           it "should use this key for the hash lookup instead" do
-            Setsumei::Build::Key.should_not_receive(:for)
-            type.should_receive(:cast).with(value_in_hash).and_return(converted_value)
+            expect(Setsumei::Build::Key).not_to receive(:for)
+            expect(type).to receive(:cast).with(value_in_hash) { converted_value }
             subject
           end
         end
